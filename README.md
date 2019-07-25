@@ -1,4 +1,4 @@
 # UI-Validation
-UI Validation 
-JavaScript
-ASP.NET Core 2.1
+UI Validation <br/>
+JavaScript <br/>
+ASP.NET Core 2.1 <br/>
