@@ -1,0 +1,257 @@
+﻿@model CorePractice.Models.Testing;
+@{
+
+
+
+
+    var xsha = "";
+
+
+    <script>
+
+        xsha = "";
+    </script>
+
+    foreach (var item in @ViewBag.Data)
+    {
+        xsha = "<option value=" + @item.Id + " data-amount=" + @item.Amount + ">" + @item.Dura + "</option>";
+    }
+
+}
+
+<div class="col-md-12">
+    <div class="col-md-8">
+        <div class="row">
+            <table class="table table-bordered" id="initialTable">
+                <thead>
+                    <tr hidden>
+                        <th style="text-align:center; width:49%">Name</th>
+                        <th style="text-align:center; width:16%">Quantity</th>
+                        <th style="text-align:center; width:16%">Amount</th>
+                        <th style="text-align:center; width:14%">Duration</th>
+                        <th style="text-align:center; width:5%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th style="text-align:center; width:49%"><input type="text" class="form-control" id="name" name="name" placeholder="Name" /></th>
+                        <th style="text-align:center; width:16%"><input type="text" style="text-align:center;" class="form-control" id="quantity" name="quantity" value="1" placeholder="Quantity" onkeypress="return isNumberKey(event,this)" /></th>
+                        <th style="text-align:center; width:16%"><input type="text" style="text-align:center;" class="form-control" id="amount" name="amount" onkeypress="return isNumberKey(event,this)" disabled /></th>
+                        <th style="width:14%">
+                            <select class="form-control duration">
+                                @{
+                                    <option value="-404" data-amount="">-------</option>
+                                    foreach (var item in @ViewBag.Data)
+                                    {
+                                        <option value="@item.Dura" data-amount="@item.Amount">@item.Dura</option>
+                                    }
+                                }
+                            </select>
+                        </th>
+                        <th style="text-align:center; width:5%;padding-bottom: 10px"><button type="button" class="btn btn-primary btn-sm newItem">+</button></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <table class="table table-bordered" id="assignTable">
+                <thead>
+                    <tr>
+                        <th style="text-align:center; width:49%">Name</th>
+                        <th style="text-align:center; width:16%">Quantity</th>
+                        <th style="text-align:center; width:16%">Amount</th>
+                        <th style="text-align:center; width:14%">Duration</th>
+                        <th style="text-align:center; width:5%"></th>
+                    </tr>
+                </thead>
+
+                <tbody id="finalData"></tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="2"></th>
+                        <th></th>
+                        <th colspan="2"></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="text-center">
+                <button class="btn btn-primary" id="btnSave"> Save </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript">
+        function isNumberKey(evt, obj) {
+
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            var value = obj.value;
+            var dotcontains = value.indexOf(".") != -1;
+            if (dotcontains)
+                if (charCode == 46) return false;
+            if (charCode == 46) return true;
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
+
+        function isEmpty(value) {
+            return (value == null || value.length === 0) ? true : false;
+        }
+
+        $(document).ready(function () {
+
+            var inc = '@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Data))';
+            inc = JSON.parse(inc);
+            //console.log(inc);
+
+            var ss = "";
+            for (i = 0; i < inc.length; i++) {
+                ss+= '<option value="' + inc[i].Id + '" data-amount="'+inc[i].Amount+'">' + inc[i].Dura + '</option>'
+            }
+
+            //console.log(ss);
+
+            $(".newItem").click(function () {
+                var name = $("#name").val();
+                var quantity = $("#quantity").val();
+                var amount = $("#amount").val();
+                var dura = $(".duration").val();
+
+                console.log(amount);
+                if (isEmpty(name) == true) {
+                    $('#name').css('border-color', 'red');
+                    return;
+                }
+                else {
+                    $('#name').css('border-color', '');
+                }
+
+                if (isEmpty(quantity) == true) {
+                    $('#quantity').css('border-color', 'red');
+                    return;
+                }
+                else {
+                    $('#quantity').css('border-color', '');
+                }
+
+                if (isEmpty(amount) == true) {
+                    $('#amount').css('border-color', 'red');
+                    return;
+                }
+                else {
+                    $('#amount').css('border-color', '');
+                }
+
+                if (dura == -404) {
+                    $('.duration').css('border-color', 'red');
+                    return;
+                }
+                else {
+                    $('.duration').css('border-color', '');
+                }
+
+                $("#finalData").append('<tr>' +
+                    '<th style = "text-align:center; width:49%"> <input type="text" class="form-control" id="name" name="name" disabled value="' + name + '" /></th >' +
+                    '<th style="text-align:center; width:16%"><input type="text" style="text-align:center;" class="form-control" id="quantity" name="quantity" disabled value="' + quantity + '" /></th>' +
+                    '<th style="text-align:center; width:16%"><input type="text" style="text-align:center;" class="form-control" id="amount" name="amount" disabled value="' + amount + '" /></th>' +
+                    '<th style="text-align:center; width:14%"><input type="text" style="text-align:center;" class="form-control" id="duration" name="duration" disabled value="' + dura + '"/></th>' +
+                    '<th style="text-align:center; width:5% ;padding-bottom: 10px"><button type="button" class="btn btn-primary btn-sm removeItem">-</button></th>' +
+                    '</tr>');
+                $("#name").val('');
+                $("#quantity").val('1');
+                $("#amount").val('');
+                //$(".duration").value(-404);
+
+                $(".duration").find('option[value="-404"]').attr('selected','selected')
+
+            });
+
+            $("#assignTable").on('click', '.removeItem', function () {
+                $(this).parent().parent().remove();
+            });
+
+            $(document).on('change', '.duration', function () {
+                var amount = $(this).find(':selected').attr('data-amount');
+                var quantity = $(this).closest('tr').find("input[name='quantity']").val();
+                $(this).closest('tr').find("input[name='amount']").val(amount * quantity);
+
+            });
+
+            $(document).on('keyup', '#quantity', function () {
+                var qty = $(this).val();
+                console.log(qty);
+                var amount = $(this).closest('tr').find(':selected').attr('data-amount');
+                var z = $(this).closest('tr').find("input[name='amount']").val(amount * qty);
+
+            });
+
+
+            $("#btnSave").click(function () {
+
+                var ClassEntryDetailsListArray = [];
+
+                $('#finalData tr').each(function () {
+
+                    ClassEntryDetails = {};
+                    ClassEntryDetails["Name"] = $(this).find("#name").val();
+                    ClassEntryDetails["Quantity"] = $(this).find("#quantity").val();
+                    ClassEntryDetailsListArray.push(ClassEntryDetails);
+                    //var p = "";
+                    //$(this).find('td').each(function () {
+                    //    console.log('start------');
+                    //    //do your stuff, you can use $(this) to get current cell
+                    //    var d = $(this).val();
+                    //    console.log(d);
+                    //})
+
+                });
+                //var Testing = {};
+                //Testing["ClassEntryDetails"] = ClassEntryDetailsListArray;
+
+                //console.log(Testing);
+                var data2 = JSON.stringify(ClassEntryDetailsListArray);
+                console.log('stringfy', data2);
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Save","Test")',
+                    data: data2,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+
+                    success: function (response) {
+
+                    },
+                    error: function () {
+
+                    }
+
+                });
+            });
+
+            //$(".newItem").click(function () {
+
+            //    var $initialBody = $('#initialTable').find("tbody");
+            //        $initialTrLast = $initialBody.find("tr:last");
+            //        $trNew1 = $initialTrLast.clone();
+
+            //    var $tableBody = $('#assignTable').find("tbody");
+            //    $trLast = $tableBody.find("tr:last");
+            //    console.log("last", $trLast);
+            //        //$trNew = $initialTrLast.clone();
+            //    $trLast.after($trNew1);
+            //    console.log("calling", $trNew1);
+            //});
+        });
+
+    </script>
+}

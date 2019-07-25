@@ -1,0 +1,4 @@
+C:\Users\shakil\Desktop\CorePractice\CorePractice\obj\Debug\netcoreapp2.0\CorePractice.csprojResolveAssemblyReference.cache
+C:\Users\shakil\Desktop\CorePractice\CorePractice\obj\Debug\netcoreapp2.0\CorePractice.csproj.CoreCompileInputs.cache
+C:\Users\shakil\Desktop\CorePractice\CorePractice\obj\Debug\netcoreapp2.0\CorePractice.AssemblyInfoInputs.cache
+C:\Users\shakil\Desktop\CorePractice\CorePractice\obj\Debug\netcoreapp2.0\CorePractice.AssemblyInfo.cs

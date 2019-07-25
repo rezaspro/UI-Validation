@@ -1,0 +1,10 @@
+﻿@model Student
+
+<form asp-controller="Home" asp-action="Test" method="GET">
+    <input type="text" name="roll" />
+    <input type="text" name="examId" />
+    <button type="submit">Search</button>
+</form>
+<br />
+
+<div>T: @Model.Roll</div>
